@@ -7,6 +7,7 @@ import CreateEventPage from "../../pages/create-event";
 import CollectionsPage from "../../pages/collections";
 import ProfilePage from "../../pages/profile";
 import Header from "../../widgets/header/ui/Header.tsx";
+import SavedPage from "../../pages/saved";
 
 export const AppRouter = () => (
     <BrowserRouter>
@@ -18,6 +19,7 @@ export const AppRouter = () => (
             <Route path="/create-event" element={<ProtectedRoute><CreateEventPage /></ProtectedRoute>} />
             <Route path="/collections" element={<ProtectedRoute><CollectionsPage /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+            <Route path="/saved" element={<ProtectedRoute><SavedPage /></ProtectedRoute>} />
         </Routes>
     </BrowserRouter>
 );

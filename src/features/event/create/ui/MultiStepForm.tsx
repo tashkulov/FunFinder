@@ -1,11 +1,14 @@
+// src/features/event/ui/MultiStepForm.tsx
 import React, { useState } from 'react';
-import { createEvent } from '../model/useCreateEvent';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { createEvent } from '../model/useCreateEvent';
+import {TextField} from "../../../../shared/ui/TextField.tsx";
 
 export const MultiStepForm: React.FC = () => {
     const navigate = useNavigate();
     const [step, setStep] = useState(1);
+
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -20,7 +23,11 @@ export const MultiStepForm: React.FC = () => {
         imagePreview: null as string | null,
     });
 
-    const categoryOptions = ['Music', 'Sport', 'Party', 'Education'];
+    const categoryOptions = [
+        'СПОРТ', 'МУЗЫКА', 'АНИМЕ', 'IT',
+        'НАУКА И ОБРАЗОВАНИЕ', 'ИСКУССТВО И КУЛЬТУРА',
+        'БИЗНЕС И СТАРТАПЫ', 'ГАСТРОНОМИЯ',
+    ];
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -49,7 +56,7 @@ export const MultiStepForm: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!formData.imageFile) return toast.error('Загрузите изображение');
+        if (!formData.imageFile) return toast.error('Пожалуйста, загрузите изображение.');
 
         try {
             await createEvent(
@@ -66,60 +73,59 @@ export const MultiStepForm: React.FC = () => {
                 },
                 formData.imageFile
             );
-
-            toast.success('Событие создано!');
+            toast.success('Событие успешно создано!');
             navigate('/');
-        } catch (err: unknown) {
-            const error = err as Error;
-            toast.error(error.message || 'Ошибка');
+        } catch (err: any) {
+            toast.error(err.message || 'Произошла ошибка при создании события.');
         }
-
     };
 
     const next = () => setStep(s => Math.min(s + 1, 4));
     const back = () => setStep(s => Math.max(s - 1, 1));
 
     return (
-        <form onSubmit={handleSubmit} className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8 space-y-8">
-            <h1 className="text-3xl font-bold text-gray-800 text-center">Создать мероприятие</h1>
-            <p className="text-center text-gray-500">Шаг {step} из 4</p>
+        <form onSubmit={handleSubmit} className="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-8 space-y-8">
+            <div className="text-center space-y-1">
+                <h1 className="text-3xl font-bold text-gray-900">Создание мероприятия</h1>
+                <p className="text-sm text-gray-500">Шаг {step} из 4</p>
+            </div>
 
             {step === 1 && (
-                <section className="space-y-4">
-                    <input name="title" placeholder="Название" value={formData.title} onChange={handleChange} required className="input-field" />
-                    <textarea name="description" placeholder="Описание" value={formData.description} onChange={handleChange} required className="input-field h-24 resize-none" />
-                    <input name="location" placeholder="Локация" value={formData.location} onChange={handleChange} required className="input-field" />
-                    <input name="minimumAge" type="number" placeholder="Минимальный возраст" value={formData.minimumAge} onChange={handleChange} required className="input-field" />
-                    <input name="startTime" type="datetime-local" value={formData.startTime} onChange={handleChange} required className="input-field" />
+                <section className="space-y-6">
+                    <TextField label="Название мероприятия" name="title" value={formData.title} onChange={handleChange} required placeholder="Введите название" />
+                    <div className="space-y-1">
+                        <label htmlFor="description" className="block text-sm font-medium text-gray-700">Описание <span className="text-red-500">*</span></label>
+                        <textarea id="description" name="description" value={formData.description} onChange={handleChange} required placeholder="Опишите мероприятие" className="block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 resize-none min-h-[96px]" />
+                    </div>
+                    <TextField label="Локация" name="location" value={formData.location} onChange={handleChange} required placeholder="Адрес проведения" />
+                    <div className="grid grid-cols-2 gap-4">
+                        <TextField label="Минимальный возраст" name="minimumAge" type="number" value={formData.minimumAge} onChange={handleChange} required />
+                        <TextField label="Дата и время начала" name="startTime" type="datetime-local" value={formData.startTime} onChange={handleChange} required />
+                    </div>
                 </section>
             )}
 
             {step === 2 && (
-                <section className="space-y-4">
-                    <div className="flex gap-4">
-                        <input name="price" type="number" placeholder="Цена" value={formData.price} onChange={handleChange} required className="input-field w-1/2" />
-                        <input name="priceCurrency" type="text" placeholder="Валюта" value={formData.priceCurrency} onChange={handleChange} required className="input-field w-1/2" />
+                <section className="space-y-6">
+                    <div className="grid grid-cols-2 gap-4">
+                        <TextField label="Цена" name="price" type="number" value={formData.price} onChange={handleChange} required placeholder="0.00" />
+                        <TextField label="Валюта" name="priceCurrency" value={formData.priceCurrency} onChange={handleChange} required placeholder="$" />
                     </div>
-                    <input name="amountOfPlaces" type="number" placeholder="Количество мест" value={formData.amountOfPlaces} onChange={handleChange} required className="input-field" />
+                    <TextField label="Количество мест" name="amountOfPlaces" type="number" value={formData.amountOfPlaces} onChange={handleChange} required placeholder="Например: 50" />
                 </section>
             )}
 
             {step === 3 && (
-                <section className="space-y-4">
-                    <div className="space-y-2">
-                        <h2 className="font-medium text-gray-700">Категории</h2>
+                <section className="space-y-6">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Категории</label>
                         <div className="flex flex-wrap gap-2">
                             {categoryOptions.map(cat => (
-                                <button
-                                    type="button"
-                                    key={cat}
-                                    onClick={() => handleCategoryToggle(cat)}
-                                    className={`px-4 py-1.5 text-sm rounded-full border transition ${
-                                        formData.categories.includes(cat)
-                                            ? 'bg-purple-600 text-white border-purple-600'
-                                            : 'bg-white text-gray-700 border-gray-300 hover:border-purple-400'
-                                    }`}
-                                >
+                                <button key={cat} type="button" onClick={() => handleCategoryToggle(cat)} className={`inline-flex items-center px-4 py-1.5 border rounded-full text-sm font-medium transition-all duration-150 ${
+                                    formData.categories.includes(cat)
+                                        ? 'bg-indigo-600 text-white border-indigo-600 hover:bg-indigo-700'
+                                        : 'bg-white text-gray-700 border-gray-300 hover:border-indigo-400'
+                                }`}>
                                     {cat}
                                 </button>
                             ))}
@@ -127,37 +133,51 @@ export const MultiStepForm: React.FC = () => {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Обложка</label>
-                        <input type="file" accept="image/*" onChange={handleImageChange} required className="text-sm" />
+                        <label htmlFor="imageFile" className="block text-sm font-medium text-gray-700 mb-1">Обложка мероприятия</label>
+                        <input type="file" id="imageFile" accept="image/*" onChange={handleImageChange} required className="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-3 py-2" />
                         {formData.imagePreview && (
-                            <img src={formData.imagePreview} alt="preview" className="mt-3 rounded-lg max-h-40 object-cover w-full" />
+                            <div className="mt-4">
+                                <img src={formData.imagePreview} alt="Предпросмотр" className="rounded-md max-h-48 w-full object-cover border" />
+                            </div>
                         )}
                     </div>
                 </section>
             )}
 
             {step === 4 && (
-                <section className="space-y-3 text-sm text-gray-700">
-                    <h2 className="font-medium text-lg text-gray-800 mb-2">Проверьте данные:</h2>
-                    <ul className="space-y-1">
-                        <li><b>Название:</b> {formData.title}</li>
-                        <li><b>Описание:</b> {formData.description}</li>
-                        <li><b>Локация:</b> {formData.location}</li>
-                        <li><b>Возраст:</b> {formData.minimumAge}</li>
-                        <li><b>Дата и время:</b> {formData.startTime}</li>
-                        <li><b>Цена:</b> {formData.price} {formData.priceCurrency}</li>
-                        <li><b>Места:</b> {formData.amountOfPlaces}</li>
-                        <li><b>Категории:</b> {formData.categories.join(', ')}</li>
-                    </ul>
+                <section className="space-y-4">
+                    <h2 className="text-lg font-semibold text-gray-900">Проверьте данные:</h2>
+                    <div className="bg-gray-50 p-4 rounded-lg space-y-2 text-sm text-gray-800">
+                        <p><strong>Название:</strong> {formData.title}</p>
+                        <p><strong>Описание:</strong> {formData.description}</p>
+                        <p><strong>Локация:</strong> {formData.location}</p>
+                        <p><strong>Возраст:</strong> {formData.minimumAge}</p>
+                        <p><strong>Дата начала:</strong> {formData.startTime}</p>
+                        <p><strong>Цена:</strong> {formData.price} {formData.priceCurrency}</p>
+                        <p><strong>Мест:</strong> {formData.amountOfPlaces}</p>
+                        <p><strong>Категории:</strong> {formData.categories.join(', ')}</p>
+                        {formData.imagePreview && (
+                            <img src={formData.imagePreview} alt="preview" className="rounded-md max-h-32 object-cover" />
+                        )}
+                    </div>
                 </section>
             )}
 
-            <div className="flex justify-between">
-                {step > 1 && <button type="button" onClick={back} className="bg-gray-200 px-4 py-2 rounded-md">Назад</button>}
-                {step < 4
-                    ? <button type="button" onClick={next} className="bg-purple-600 text-white px-6 py-2 rounded-md">Далее</button>
-                    : <button type="submit" className="bg-purple-600 text-white px-6 py-2 rounded-md">Создать</button>
-                }
+            <div className="flex justify-between pt-6">
+                {step > 1 && (
+                    <button type="button" onClick={back} className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100">
+                        Назад
+                    </button>
+                )}
+                {step < 4 ? (
+                    <button type="button" onClick={next} className="ml-auto inline-flex items-center px-6 py-2 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-md shadow">
+                        Далее
+                    </button>
+                ) : (
+                    <button type="submit" className="ml-auto inline-flex items-center px-6 py-2 text-sm font-semibold text-white bg-green-600 hover:bg-green-700 rounded-md shadow">
+                        Создать мероприятие
+                    </button>
+                )}
             </div>
         </form>
     );

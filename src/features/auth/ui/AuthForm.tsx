@@ -4,7 +4,6 @@ import { login, register } from '../model/useAuth';
 import { toast } from 'react-toastify';
 import {Input} from "../../../shared/ui/Input.tsx";
 import {Button} from "../../../shared/ui/Button.tsx";
-
 export const AuthForm: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -16,6 +15,7 @@ export const AuthForm: React.FC = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [birthDate, setBirthDate] = useState(''); // 👈 новое состояние
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -29,7 +29,13 @@ export const AuthForm: React.FC = () => {
         try {
             if (isRegister) {
                 await register({
-                    email, password, first_name: firstName, last_name: lastName, phone_number: phoneNumber, role
+                    email,
+                    password,
+                    first_name: firstName,
+                    last_name: lastName,
+                    phone_number: phoneNumber,
+                    date_of_birth: birthDate, 
+                    role,
                 });
                 toast.success('Регистрация успешна!');
                 setIsRegister(false);
@@ -55,6 +61,7 @@ export const AuthForm: React.FC = () => {
                         <Input placeholder="Имя" value={firstName} onChange={e => setFirstName(e.target.value)} required />
                         <Input placeholder="Фамилия" value={lastName} onChange={e => setLastName(e.target.value)} required />
                         <Input placeholder="Телефон" value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} required />
+                        <Input type="date" value={birthDate} onChange={e => setBirthDate(e.target.value)} required /> {/* 👈 поле даты */}
                         <select
                             className="input"
                             value={role}
@@ -63,7 +70,7 @@ export const AuthForm: React.FC = () => {
                         >
                             <option value="" disabled>Выберите роль</option>
                             <option value="USER">Гость</option>
-                            <option value="ORGANIZER">Организатор</option>
+                            <option value="ROLE_ORGANIZER">Организатор</option>
                         </select>
                     </>
                 )}

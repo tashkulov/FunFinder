@@ -1,8 +1,13 @@
 import {API_URL} from "../config/env.ts";
 
 export const api = {
-    get: async (url: string) => {
-        const res = await fetch(`${API_URL}${url}`);
+    get: async (url: string, token?: string) => {
+        const res = await fetch(`${API_URL}${url}`, {
+            headers: {
+                ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                'Content-Type': 'application/json',
+            },
+        });
         if (!res.ok) throw new Error('Ошибка запроса');
         return res.json();
     },

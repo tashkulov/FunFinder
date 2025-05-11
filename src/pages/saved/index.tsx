@@ -1,24 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import {
-    commentEvent,
-    dislikeEvent,
-    fetchEvents,
-    likeEvent,
-    saveEventAsBookmark
-} from "../../entities/event/model/api.ts";
+import { fetchSavedEvents, saveEventAsBookmark} from "../../entities/event/model/api.ts";
 import {EventCard} from "../../entities/event/ui/EventCard.tsx";
 import {EventEntity} from "../../entities/event/model/types.ts";
-import {toast} from "react-toastify";
 
-const HomePage: React.FC = () => {
+const SavedPage: React.FC = () => {
     const [events, setEvents] = useState<EventEntity[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
     const [selectedEvent, setSelectedEvent] = useState<EventEntity | null>(null);
-    const [likedEventIds, setLikedEventIds] = useState<number[]>([]);
+
 
     useEffect(() => {
-        fetchEvents()
+        fetchSavedEvents()
             .then(setEvents)
             .catch(console.error)
             .finally(() => setLoading(false));
@@ -33,8 +26,7 @@ const HomePage: React.FC = () => {
     return (
         <div className="min-h-screen bg-gray-100 px-4 py-10">
             <header className="text-center mb-10">
-                <h1 className="text-4xl font-bold text-gray-800 mb-2">Добро пожаловать в FunFinder 🎉</h1>
-                <p className="text-gray-500 mb-4">Находите и организовывайте события легко!</p>
+                <h1 className="text-4xl font-bold text-gray-800 mb-2">Сохраненные</h1>
                 <input
                     type="text"
                     placeholder="Поиск событий..."
@@ -101,78 +93,35 @@ const HomePage: React.FC = () => {
                         )}
                         <p className="text-gray-700 mt-4">{selectedEvent.description}</p>
                         <div className="flex gap-6 justify-center text-2xl text-gray-600 mt-6">
-                            <div className="flex gap-6 justify-center text-2xl text-gray-600 mt-6">
-                                <button
-                                    onClick={async () => {
-                                        try {
-                                            await likeEvent(selectedEvent.id);
-                                            toast.success('Вы поставили лайк!');
+                            <button
+                                onClick={async () => {
+                                    console.log('like', selectedEvent.id);
+                                }}
+                                className="hover:text-green-500 transition"
+                                title="Лайк"
+                            >
+                                👍
+                            </button>
 
-                                            setLikedEventIds((prev) =>
-                                                prev.includes(selectedEvent.id)
-                                                    ? prev.filter((id) => id !== selectedEvent.id) // убрать из лайкнутых
-                                                    : [...prev, selectedEvent.id] // добавить в лайкнутые
-                                            );
-                                        } catch (e: any) {
-                                            toast.error(e.message || 'Ошибка при лайке');
-                                        }
-                                    }}
-                                    className={`transition text-3xl ${
-                                        likedEventIds.includes(selectedEvent.id) ? 'text-red-500' : 'text-gray-500'
-                                    }`}
-                                    title="Лайк"
-                                >
-                                    {likedEventIds.includes(selectedEvent.id) ? '❤️' : '🤍'}
-                                </button>
+                            <button
+                                onClick={async () => {
+                                    console.log('dislike', selectedEvent.id);
+                                }}
+                                className="hover:text-red-500 transition"
+                                title="Дизлайк"
+                            >
+                                👎
+                            </button>
 
-                                <button
-                                    onClick={async () => {
-                                        try {
-                                            await dislikeEvent(selectedEvent.id);
-                                            toast.info('Вы поставили дизлайк.');
-                                        } catch (e: any) {
-                                            toast.error(e.message || 'Ошибка при дизлайке');
-                                        }
-                                    }}
-                                    className="hover:text-red-500 transition"
-                                    title="Дизлайк"
-                                >
-                                    👎
-                                </button>
-
-                                <button
-                                    onClick={async () => {
-                                        const comment = prompt('Введите ваш комментарий:');
-                                        if (!comment) return;
-                                        try {
-                                            await commentEvent(selectedEvent.id, comment);
-                                            toast.success('Комментарий отправлен!');
-                                        } catch (e: any) {
-                                            toast.error(e.message || 'Ошибка при отправке комментария');
-                                        }
-                                    }}
-                                    className="hover:text-indigo-500 transition"
-                                    title="Комментировать"
-                                >
-                                    💬
-                                </button>
-
-                                <button
-                                    onClick={async () => {
-                                        try {
-                                            await saveEventAsBookmark(selectedEvent.id);
-                                            toast.success('Событие сохранено!');
-                                        } catch (e: any) {
-                                            toast.error(e.message || 'Ошибка при сохранении');
-                                        }
-                                    }}
-                                    className="hover:text-yellow-500 transition"
-                                    title="Сохранить"
-                                >
-                                    ⭐
-                                </button>
-                            </div>
-
+                            <button
+                                onClick={async () => {
+                                    console.log('comment', selectedEvent.id);
+                                }}
+                                className="hover:text-indigo-500 transition"
+                                title="Комментировать"
+                            >
+                                💬
+                            </button>
 
                             <button
                                 onClick={async () => {
@@ -199,4 +148,4 @@ const HomePage: React.FC = () => {
     );
 };
 
-export default HomePage;
+export default SavedPage;
