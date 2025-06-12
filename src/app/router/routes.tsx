@@ -8,6 +8,7 @@ import CollectionsPage from "../../pages/collections";
 import ProfilePage from "../../pages/profile";
 import Header from "../../widgets/header/ui/Header.tsx";
 import SavedPage from "../../pages/saved";
+import LikedPage from "../../pages/liked";
 
 export const AppRouter = () => (
     <BrowserRouter>
@@ -20,6 +21,7 @@ export const AppRouter = () => (
             <Route path="/collections" element={<ProtectedRoute><CollectionsPage /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
             <Route path="/saved" element={<ProtectedRoute><SavedPage /></ProtectedRoute>} />
+            <Route path="/liked" element={<ProtectedRoute><LikedPage /></ProtectedRoute>} />
         </Routes>
     </BrowserRouter>
 );

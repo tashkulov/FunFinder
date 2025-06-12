@@ -4,21 +4,54 @@ import { EventEntity } from "../model/types.ts";
 interface Props {
     event: EventEntity;
     onClick: () => void;
-    onSave?: (event: EventEntity) => void;
+    liked: boolean;
+    saved: boolean;
+    onLike: (eventId: number) => void;
+    onSave: (eventId: number) => void;
 }
 
-export const EventCard: React.FC<Props> = ({ event, onClick, onSave }) => {
+export const EventCard: React.FC<Props> = ({ event, onClick, liked, saved, onLike, onSave }) => {
+
+
     return (
         <div
-            className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all overflow-hidden flex flex-col"
+            className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all overflow-hidden flex flex-col relative"
             onClick={onClick}
         >
-            <div className="h-48 w-full overflow-hidden">
+            <div className="h-48 w-full overflow-hidden relative group">
                 <img
                     src={event.image_url}
                     alt={event.title}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                 />
+
+                {/* Лайк */}
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onLike(event.id);
+                    }}
+                    className={`absolute top-3 right-3 text-4xl transition ${
+                        liked ? 'text-red-500 scale-110' : 'text-white/90'
+                    } hover:scale-125`}
+                    title="Лайк"
+                >
+                    {liked ? '❤️' : '🤍'}
+                </button>
+
+                {/* Сохранённое */}
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onSave(event.id);
+                    }}
+                    className={`absolute top-3 left-3 text-3xl transition ${
+                        saved ? 'text-yellow-400 scale-110' : 'text-white/90'
+                    } hover:scale-125`}
+                    title="Сохранить"
+                >
+                    {saved ? '⭐' : '☆'}
+                </button>
             </div>
 
             <div className="p-5 flex flex-col flex-1">
@@ -27,68 +60,15 @@ export const EventCard: React.FC<Props> = ({ event, onClick, onSave }) => {
                 <p className="text-sm text-gray-500 mb-2">📍 {event.location}</p>
                 <p className="text-sm text-gray-600 mb-4 line-clamp-3">{event.description}</p>
 
-                <div className="mt-auto flex gap-2">
-                    <button
-                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2.5 rounded-md transition-all"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            onClick();
-                        }}
-                    >
-                        Подробнее
-                    </button>
-
-                    <div className="flex justify-between items-center mt-2">
-                        <div className="flex gap-3 text-gray-500 text-xl">
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    console.log('like', event.id);
-                                }}
-                                title="Лайк"
-                                className="hover:text-green-600 transition"
-                            >
-                                👍
-                            </button>
-
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    console.log('dislike', event.id);
-                                }}
-                                title="Дизлайк"
-                                className="hover:text-red-500 transition"
-                            >
-                                👎
-                            </button>
-
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    console.log('comment', event.id);
-                                }}
-                                title="Комментировать"
-                                className="hover:text-indigo-500 transition"
-                            >
-                                💬
-                            </button>
-                        </div>
-
-                        {onSave && (
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    onSave(event);
-                                }}
-                                title="Сохранить"
-                                className="text-yellow-500 hover:text-yellow-600 text-xl transition"
-                            >
-                                ⭐
-                            </button>
-                        )}
-                    </div>
-
-                </div>
+                <button
+                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2.5 rounded-md transition-all mt-auto"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onClick();
+                    }}
+                >
+                    Подробнее
+                </button>
             </div>
         </div>
     );

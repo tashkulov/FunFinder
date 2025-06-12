@@ -92,15 +92,24 @@ export const MultiStepForm: React.FC = () => {
 
             {step === 1 && (
                 <section className="space-y-6">
-                    <TextField label="Название мероприятия" name="title" value={formData.title} onChange={handleChange} required placeholder="Введите название" />
+                    <TextField label="Название мероприятия" name="title"
+                               value={formData.title} onChange={handleChange} required placeholder="Введите название" />
                     <div className="space-y-1">
-                        <label htmlFor="description" className="block text-sm font-medium text-gray-700">Описание <span className="text-red-500">*</span></label>
-                        <textarea id="description" name="description" value={formData.description} onChange={handleChange} required placeholder="Опишите мероприятие" className="block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 resize-none min-h-[96px]" />
+                        <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+                            Описание <span className="text-red-500">*</span></label>
+                        <textarea
+                            id="description" name="description" value={formData.description}
+                            onChange={handleChange} required placeholder="Опишите мероприятие"
+                            className="block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500
+                             focus:ring-indigo-500 sm:text-sm px-3 py-2 resize-none min-h-[96px]" />
                     </div>
-                    <TextField label="Локация" name="location" value={formData.location} onChange={handleChange} required placeholder="Адрес проведения" />
+                    <TextField label="Локация" name="location" value={formData.location}
+                               onChange={handleChange} required placeholder="Адрес проведения" />
                     <div className="grid grid-cols-2 gap-4">
-                        <TextField label="Минимальный возраст" name="minimumAge" type="number" value={formData.minimumAge} onChange={handleChange} required />
-                        <TextField label="Дата и время начала" name="startTime" type="datetime-local" value={formData.startTime} onChange={handleChange} required />
+                        <TextField label="Минимальный возраст" name="minimumAge"
+                                   type="number" value={formData.minimumAge} onChange={handleChange} required />
+                        <TextField label="Дата и время начала" name="startTime"
+                                   type="datetime-local" value={formData.startTime} onChange={handleChange} required />
                     </div>
                 </section>
             )}
@@ -108,10 +117,14 @@ export const MultiStepForm: React.FC = () => {
             {step === 2 && (
                 <section className="space-y-6">
                     <div className="grid grid-cols-2 gap-4">
-                        <TextField label="Цена" name="price" type="number" value={formData.price} onChange={handleChange} required placeholder="0.00" />
-                        <TextField label="Валюта" name="priceCurrency" value={formData.priceCurrency} onChange={handleChange} required placeholder="$" />
+                        <TextField label="Цена" name="price" type="number" value={formData.price}
+                                   onChange={handleChange} required placeholder="0.00" />
+                        <TextField label="Валюта" name="priceCurrency" value={formData.priceCurrency}
+                                   onChange={handleChange} required placeholder="$" />
                     </div>
-                    <TextField label="Количество мест" name="amountOfPlaces" type="number" value={formData.amountOfPlaces} onChange={handleChange} required placeholder="Например: 50" />
+                    <TextField label="Количество мест" name="amountOfPlaces" type="number"
+                               value={formData.amountOfPlaces} onChange={handleChange}
+                               required placeholder="Например: 50" />
                 </section>
             )}
 
@@ -121,7 +134,8 @@ export const MultiStepForm: React.FC = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">Категории</label>
                         <div className="flex flex-wrap gap-2">
                             {categoryOptions.map(cat => (
-                                <button key={cat} type="button" onClick={() => handleCategoryToggle(cat)} className={`inline-flex items-center px-4 py-1.5 border rounded-full text-sm font-medium transition-all duration-150 ${
+                                <button key={cat} type="button" onClick={() => handleCategoryToggle(cat)} className={`inline-flex 
+                                items-center px-4 py-1.5 border rounded-full text-sm font-medium transition-all duration-150 ${
                                     formData.categories.includes(cat)
                                         ? 'bg-indigo-600 text-white border-indigo-600 hover:bg-indigo-700'
                                         : 'bg-white text-gray-700 border-gray-300 hover:border-indigo-400'

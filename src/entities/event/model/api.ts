@@ -11,18 +11,24 @@ export const fetchSavedEvents = async (): Promise<EventEntity[]> => {
     const token = localStorage.getItem('accessToken');
     return api.get('/events/saved', token ?? undefined);
 };
+export const fetchLikedEvents = async (): Promise<EventEntity[]> => {
+    const token = localStorage.getItem('accessToken');
+    return api.get('/events/liked', token ?? undefined);
+};
+
+
 export const likeEvent = async (id: number | string): Promise<void> => {
     const token = localStorage.getItem('accessToken');
     if (!token) throw new Error('Нет токена');
-
     return api.post(`/events/like/${id}`, {}, token);
 };
 
-export const dislikeEvent = async (id: number | string): Promise<void> => {
+
+export const removeLike = async (id: number | string): Promise<void> => {
     const token = localStorage.getItem('accessToken');
     if (!token) throw new Error('Нет токена');
 
-    return api.post(`/events/dislike/${id}`, {}, token);
+    return api.post(`/events/remove-like/${id}`, {}, token);
 };
 
 export const commentEvent = async (id: number | string, comment: string): Promise<void> => {

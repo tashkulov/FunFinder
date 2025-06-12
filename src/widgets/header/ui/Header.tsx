@@ -50,6 +50,7 @@ const Header = () => {
                                     <Link to="/profile" className="block px-4 py-2 hover:bg-gray-100">👤 Профиль</Link>
                                     <Link to="/tickets" className="block px-4 py-2 hover:bg-gray-100">🎟 Мои билеты</Link>
                                     <Link to="/saved" className="block px-4 py-2 hover:bg-gray-100">❤️ Избранное</Link>
+                                    <Link to="/liked" className="block px-4 py-2 hover:bg-gray-100">⭐ Сохраненные</Link>
                                     <Link to="/settings" className="block px-4 py-2 hover:bg-gray-100">⚙️ Настройки</Link>
                                     <button
                                         onClick={() => {

@@ -61,7 +61,7 @@ export const AuthForm: React.FC = () => {
                         <Input placeholder="Имя" value={firstName} onChange={e => setFirstName(e.target.value)} required />
                         <Input placeholder="Фамилия" value={lastName} onChange={e => setLastName(e.target.value)} required />
                         <Input placeholder="Телефон" value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} required />
-                        <Input type="date" value={birthDate} onChange={e => setBirthDate(e.target.value)} required /> {/* 👈 поле даты */}
+                        <Input type="date" value={birthDate} onChange={e => setBirthDate(e.target.value)} required />
                         <select
                             className="input"
                             value={role}

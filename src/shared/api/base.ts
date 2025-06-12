@@ -1,18 +1,42 @@
-import {API_URL} from "../config/env.ts";
+import { API_URL } from "../config/env.ts";
+
+const parseResponse = async (res: Response) => {
+    const text = await res.text();
+
+    try {
+        return JSON.parse(text);
+    } catch {
+        return text;
+    }
+};
+
+const handleResponse = async (res: Response) => {
+    const data = await parseResponse(res);
+
+    if (!res.ok) {
+        const errorMessage =
+            (data && typeof data === 'object' && 'message' in data) ? data.message :
+                (typeof data === 'string' ? data : 'Ошибка запроса');
+        throw new Error(errorMessage);
+    }
+
+    return data;
+};
 
 export const api = {
     get: async (url: string, token?: string) => {
         const res = await fetch(`${API_URL}${url}`, {
+            method: 'GET',
             headers: {
-                ...(token ? { Authorization: `Bearer ${token}` } : {}),
                 'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {}),
             },
         });
-        if (!res.ok) throw new Error('Ошибка запроса');
-        return res.json();
+
+        return handleResponse(res);
     },
 
-    post: async (url: string, body: unknown, token?: string) => {
+    post: async (url: string, body: unknown = {}, token?: string) => {
         const res = await fetch(`${API_URL}${url}`, {
             method: 'POST',
             headers: {
@@ -22,8 +46,7 @@ export const api = {
             body: JSON.stringify(body),
         });
 
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'Ошибка');
-        return data;
+        return handleResponse(res);
     },
+
 };
