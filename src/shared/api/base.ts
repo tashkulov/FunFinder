@@ -49,4 +49,17 @@ export const api = {
         return handleResponse(res);
     },
 
+    delete: async (url: string, body?: unknown, token?: string) => {
+        const res = await fetch(`${API_URL}${url}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
+            body: body ? JSON.stringify(body) : undefined,
+        });
+
+        return handleResponse(res);
+    },
 };
+
