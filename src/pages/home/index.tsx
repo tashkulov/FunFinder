@@ -14,7 +14,7 @@ const HomePage: React.FC = () => {
     const [loading, setLoading] = useState(true);
 
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
-    const [, setSelectedEventId] = useState<number | null>(null);
+    const [, setSelectedEventId] = useState<string | null>(null);
     const [selectedEvent, setSelectedEvent] = useState<EventEntity | null>(null);
     const [detailsLoading, setDetailsLoading] = useState(false);
     const [detailsError, setDetailsError] = useState<string | null>(null);
@@ -26,9 +26,10 @@ const HomePage: React.FC = () => {
             .finally(() => setLoading(false));
     }, []);
 
-    const handleOpenEvent = async (id: number) => {
+    const handleOpenEvent = async (id: string) => {
         setDetailsModalOpen(true);
         setSelectedEventId(id);
+
         setDetailsLoading(true);
         setDetailsError(null);
         try {
@@ -86,7 +87,7 @@ const HomePage: React.FC = () => {
                             <EventCard
                                 key={event.id}
                                 event={event}
-                                onClick={() => handleOpenEvent(+event.id)}
+                                onClick={() => handleOpenEvent(event.id)}
                             />
                         ))}
                     </div>

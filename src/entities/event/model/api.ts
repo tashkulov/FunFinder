@@ -2,12 +2,10 @@ import { EventEntity} from './types';
 import {api} from "../../../shared/api/base.ts";
 
 export const fetchEvents = async (): Promise<EventEntity[]> => {
-
     return api.get('/events',);
 };
 export const fetchEvent = async (id: string): Promise<EventEntity> => {
     const token = localStorage.getItem('accessToken');
-    console.log(token)
     if (!token) throw new Error('Нет токена');
     return  await api.get(`/events/${id}`,token ?? undefined);
 

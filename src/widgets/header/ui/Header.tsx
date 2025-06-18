@@ -25,7 +25,6 @@ const Header = () => {
                 <Link to="/" className="text-2xl font-bold">FunFinder</Link>
 
                 <nav className="flex gap-6 items-center">
-                    <Link to="/collections" className="hover:text-purple-400">Подборки</Link>
                     <Link to="/categories" className="hover:text-purple-400">Категории</Link>
                 </nav>
 
@@ -49,9 +48,10 @@ const Header = () => {
                                 <div className="absolute right-0 top-12 bg-white text-gray-900 shadow-xl rounded-md w-48 py-2 z-50">
                                     <Link to="/profile" className="block px-4 py-2 hover:bg-gray-100">👤 Профиль</Link>
                                     <Link to="/tickets" className="block px-4 py-2 hover:bg-gray-100">🎟 Мои билеты</Link>
-                                    <Link to="/saved" className="block px-4 py-2 hover:bg-gray-100">❤️ Избранное</Link>
+                                    <Link to="/saved" className="block px-4 py-2 hover:bg-gray-100">❤️ Понравившиеся</Link>
                                     <Link to="/liked" className="block px-4 py-2 hover:bg-gray-100">⭐ Сохраненные</Link>
                                     <Link to="/settings" className="block px-4 py-2 hover:bg-gray-100">⚙️ Настройки</Link>
+                                    <Link to="/settings" className="block px-4 py-2 hover:bg-gray-100">⚙️ Проданные билеты</Link>
                                     <button
                                         onClick={() => {
                                             // тут можешь вызвать logout
