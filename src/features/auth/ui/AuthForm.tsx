@@ -15,7 +15,7 @@ export const AuthForm: React.FC = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [birthDate, setBirthDate] = useState(''); // 👈 новое состояние
+    const [birthDate, setBirthDate] = useState('');
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -25,7 +25,6 @@ export const AuthForm: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         try {
             if (isRegister) {
                 await register({
@@ -48,7 +47,6 @@ export const AuthForm: React.FC = () => {
             toast.error(err.message || 'Ошибка');
         }
     };
-
     return (
         <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-2xl">
             <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
@@ -69,7 +67,7 @@ export const AuthForm: React.FC = () => {
                             required
                         >
                             <option value="" disabled>Выберите роль</option>
-                            <option value="USER">Гость</option>
+                            <option value="ROLE_USER">Гость</option>
                             <option value="ROLE_ORGANIZER">Организатор</option>
                         </select>
                     </>

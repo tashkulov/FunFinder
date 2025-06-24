@@ -23,14 +23,15 @@ export const login = async (payload: LoginPayload) => {
 
     if (!res.ok) throw new Error(data.message || 'Ошибка авторизации');
 
-    // ✅ сохраняем всё
     userStorage.setToken(data.accessToken);
-    userStorage.setRefreshToken(data.refreshToken); // <— 🔥 важно
+    userStorage.setRefreshToken(data.refreshToken);
     userStorage.setEmail(data.email);
     userStorage.setUserId(data.id);
+    userStorage.setRole(data.role);
 
     return data;
 };
+
 export const register = async (payload: RegisterPayload) => {
     const res = await fetch(`${API_URL}/auth/register`, {
         method: 'POST',

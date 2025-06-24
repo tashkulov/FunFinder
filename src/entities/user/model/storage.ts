@@ -46,6 +46,15 @@ export const userStorage = {
         localStorage.removeItem(USER_ID_KEY);
         notifyAuthChanged();
     },
+    getRole: () => localStorage.getItem(ROLE_KEY),
+    setRole: (role: string) => {
+        localStorage.setItem(ROLE_KEY, role);
+        notifyAuthChanged();
+    },
+    removeRole: () => {
+        localStorage.removeItem(ROLE_KEY);
+        notifyAuthChanged();
+    },
 
     clearAll: () => {
         localStorage.removeItem(TOKEN_KEY);

@@ -9,6 +9,9 @@ import ProfilePage from "../../pages/profile";
 import Header from "../../widgets/header/ui/Header.tsx";
 import SavedPage from "../../pages/saved";
 import LikedPage from "../../pages/liked";
+import SoldTicketsPage from "../../pages/SoldTicketsPage/SoldTicketsPage.tsx";
+import StatsPage from "../../pages/stats/StatsPage.tsx";
+import UsersPage from "../../pages/users/UsersPage.tsx";
 
 export const AppRouter = () => (
     <BrowserRouter>
@@ -22,6 +25,9 @@ export const AppRouter = () => (
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
             <Route path="/saved" element={<ProtectedRoute><SavedPage /></ProtectedRoute>} />
             <Route path="/liked" element={<ProtectedRoute><LikedPage /></ProtectedRoute>} />
+            <Route path="/sold-tickets" element={<SoldTicketsPage />} />
+            <Route path="/stats" element={<StatsPage />} />
+            <Route path="/users" element={<UsersPage />} />
         </Routes>
     </BrowserRouter>
 );

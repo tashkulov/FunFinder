@@ -18,3 +18,8 @@ export const getUserProfile = async (id: string) => {
 
     return api.get(`/users/${id}`);
 };
+export const fetchAllUsers = async () => {
+    const token = userStorage.getToken();
+    if (!token) throw new Error('Нет токена');
+    return api.get(`/users`);
+};
